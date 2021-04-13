@@ -1,0 +1,8 @@
+- name: "Manage LVM volume groups"
+  community.general.lvg:
+    vg: "{{ item['vg'] | mandatory }}"
+    pvs: "{{ item['pvs'] | default([]) | join(',') | default(omit,true) }}"
+    state: "{{ item['state'] | default(omit) }}"
+  loop: "{{ disk_vgs }}"
+  loop_control:
+    label: "{{ item['vg'] }} {{ item['state'] | default('present') }}"

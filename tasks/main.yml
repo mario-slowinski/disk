@@ -1,0 +1,35 @@
+- name: "Manage disk partitions"
+  tags:
+  - disk
+  - disk-partition
+  import_tasks: partition.yml
+  when: disk_partitions is defined
+
+- name: "Manage logical volume groups"
+  tags:
+  - disk
+  - disk-vg
+  import_tasks: vg.yml
+  when: disk_vgs is defined
+
+- name: "Manage logical volumes"
+  tags:
+  - disk
+  - disk-lvol
+  import_tasks: lvol.yml
+  when: disk_lvols is defined
+
+- name: "Manage filesystems"
+  tags:
+  - disk
+  - disk-filesystem
+  import_tasks: filesystem.yml
+  when: disk_filesystems is defined
+
+- name: "Manage logical volumes"
+  tags:
+  - disk
+  - disk-mount
+  import_tasks: mount.yml
+  when: disk_mounts is defined
+
