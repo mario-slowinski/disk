@@ -1,0 +1,16 @@
+- name: "Manage disk partitions with parted"
+  community.general.parted:
+    device: "{{ item['device'] | mandatory }}"
+    label: "{{ item['label'] | default(omit) }}"
+    part_type: "{{ item['part_type'] | default(omit) }}"
+    number: "{{ item['number'] | default(omit) }}"
+    part_start: "{{ item['start'] | default(omit) }}"
+    part_end: "{{ item['end'] | default(omit) }}"
+    unit: "{{ disk_unit }}"
+    flags: "{{ item['flags'] | default(omit) }}"
+    resize: "{{ item['resize'] | default(omit) }}"
+    state: "{{ item['state'] | default('info') }}"
+  loop: "{{ disk_partitions }}"
+  loop_control:
+    label: "{{ item['device'] }}{{ item['number'] }} {{ item['state'] | default('info') }}"
+

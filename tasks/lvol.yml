@@ -1,0 +1,11 @@
+- name: "Manage LVM volumes"
+  community.general.lvol:
+    vg: "{{ item['vg'] | mandatory }}"
+    pvs: "{{ item['pvs'] | default([]) | join(',') | default(omit,true) }}"
+    lv: "{{ item['lv'] | default(omit) }}"
+    size: "{{ item['size'] | default(omit) }}"
+    thinpool: "{{ item['thinpool'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+  loop: "{{ disk_lvols }}"
+  loop_control:
+    label: "{{ item['lv'] }} {{ item['size'] | default('') }} {{ item['state'] | default('present') }}"
