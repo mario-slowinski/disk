@@ -1,3 +1,4 @@
+---
 - name: "Manage disk partitions with parted"
   community.general.parted:
     device: "{{ item['device'] | mandatory }}"
@@ -13,4 +14,3 @@
   loop: "{{ disk_partitions }}"
   loop_control:
     label: "{{ item['device'] }}{{ item['number'] }} {{ item['state'] | default('info') }}"
-

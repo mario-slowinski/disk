@@ -1,3 +1,4 @@
+---
 - name: "Manage filesystem mount"
   ansible.posix.mount:
     src: "{{ item['dev'] | default(omit) }}"

@@ -1,3 +1,4 @@
+---
 - name: "Manage LVM volumes"
   community.general.lvol:
     vg: "{{ item['vg'] | mandatory }}"

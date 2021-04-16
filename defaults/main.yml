@@ -1,48 +1,49 @@
+---
 disk_unit: "GB"
 
 
 disk_partitions:
-- device: /dev/sdb
-  label: gpt
-  type: primary
-  number: 1
-  name: lvm
-  start: "0%"
-  end: "100%"
-  resize: no
-  flags:
-  - lvm
-  state: present
+  - device: /dev/sdb
+    label: gpt
+    type: primary
+    number: 1
+    name: lvm
+    start: "0%"
+    end: "100%"
+    resize: false
+    flags:
+      - lvm
+    state: present
 
 
 disk_vgs:
-- vg: export
-  pvs: 
-  - /dev/sdb1
-  state: present
+  - vg: export
+    pvs:
+      - /dev/sdb1
+    state: present
 
 
 disk_lvols:
-- vg: export
-  lv: fs
-  state: present
+  - vg: export
+    lv: fs
+    state: present
 
 
 disk_filesystems:
-- dev: /dev/export/fs
-  fstype: xfs
-  opts:
-  - "-L export-fs"
-  force: no
-  resize: no
-  state: present
+  - dev: /dev/export/fs
+    fstype: xfs
+    opts:
+      - "-L export-fs"
+    force: false
+    resize: false
+    state: present
 
 disk_mounts:
-- dev: /dev/export/fs
-  path: /export/fs
-  fstype: xfs
-  opts:
-  - defaults
-  passno: 0
-  dump: 0
-  state: mounted
+  - dev: /dev/export/fs
+    path: /export/fs
+    fstype: xfs
+    opts:
+      - defaults
+    passno: 0
+    dump: 0
+    state: mounted
