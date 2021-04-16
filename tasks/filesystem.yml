@@ -1,3 +1,4 @@
+---
 - name: "Manage filesystem"
   community.general.filesystem:
     dev: "{{ item['dev'] | mandatory }}"
@@ -9,4 +10,3 @@
   loop: "{{ disk_filesystems }}"
   loop_control:
     label: "{{ item['dev'] }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
-
