@@ -1,38 +1,73 @@
-Role Name
-=========
+disk
+====
 
-A brief description of the role goes here.
+Ansible role to manage:
+
+* [disk partitions](https://docs.ansible.com/ansible/latest/collections/community/general/parted_module.html)
+* [LVM volume groups](https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html)
+* [LVM volumes](https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html)
+* [filesystem](https://docs.ansible.com/ansible/latest/collections/community/general/filesystem_module.html)
+* [mounts](https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* [ansible.builtin](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html)
+* [ansible.posix](https://docs.ansible.com/ansible/latest/collections/ansible/posix/index.html)
+* [community.general](https://docs.ansible.com/ansible/latest/collections/community/general/)
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+* defaults
+
+  ```yaml
+  disk_partitions: []   # list of disk partitions to manage
+
+  disk_vgs: []          # list of LVM volume groups to manage
+      pvs: []           # list of PVS for VG
+
+  disk_lvols: []        # list of LVM volumes to manage
+
+  disk_filesystems: []  # list of LVM volumes to manage
+    opts: []            # list of options passed to mkfs
+
+  disk_mounts: []       # list of mounts to manage
+    opts: []            # list of options passed to mount
+  ```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+There are no dependencies.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+* `requirements.yml`
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  ```yaml
+  - name: disk
+    src: https://github.com/mario-slowinski/disk
+  ```
+
+* playbook usage
+
+  ```yaml
+  - hosts: servers
+    gather_facts: false
+    roles:
+      - role: disk
+        tasks_from: mount.yml 
+        # manage only mounts, same effect if only disk_mounts is defined
+  ```
 
 License
 -------
 
-BSD
+[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html)
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[mario.slowinski@gmail.com](mailto:mario.slowinski@gmail.com)
