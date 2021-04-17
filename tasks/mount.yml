@@ -11,3 +11,19 @@
   loop: "{{ disk_mounts }}"
   loop_control:
     label: "{{ item['dev'] }} {{ item['path'] | default('') }} {{ item['state'] }}"
+
+- name: "Set mount permissions"
+  tags:
+    - disk.mount.permission
+  ansible.builtin.file:
+    path: "{{ item['path'] | mandatory }}"
+    owner: "{{ item['owner'] | default(omit) }}"
+    group: "{{ item['group'] | default(omit) }}"
+    mode: "{{ item['mode'] | default(omit) }}"
+  loop: "{{ disk_mounts }}"
+  loop_control:
+    label: "{{ item['path'] }} owner={{ item['owner'] | default('') }} group={{ item['group'] | default('') }} mode={{ item['mode'] | default('') }}"
+  when: >-
+    item['owner'] is defined
+    or item['group'] is defined
+    or item['mode'] is defined

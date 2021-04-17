@@ -34,6 +34,10 @@ Role Variables
 
   disk_mounts: []       # list of mounts to manage
     opts: []            # list of options passed to mount
+    owner:              # moutpoint path owner
+    group:              # moutpoint path group
+    mode:               # moutpoint path mode, 
+                        # use 0o755 or '0755' notation
   ```
 
 Dependencies
