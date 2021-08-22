@@ -4,32 +4,32 @@
     - disk
     - disk.partition
   import_tasks: partition.yml
-  when: disk_partitions is defined
+  when: disk_partitions | length > 0
 
 - name: "Manage logical volume groups"
   tags:
     - disk
     - disk.vg
   import_tasks: vg.yml
-  when: disk_vgs is defined
+  when: disk_vgs | length > 0
 
 - name: "Manage logical volumes"
   tags:
     - disk
     - disk.lvol
   import_tasks: lvol.yml
-  when: disk_lvols is defined
+  when: disk_lvols | length > 0
 
 - name: "Manage filesystems"
   tags:
     - disk
     - disk.filesystem
   import_tasks: filesystem.yml
-  when: disk_filesystems is defined
+  when: disk_filesystems | length > 0
 
 - name: "Manage logical volumes"
   tags:
     - disk
     - disk.mount
   import_tasks: mount.yml
-  when: disk_mounts is defined
+  when: disk_mounts | length > 0
