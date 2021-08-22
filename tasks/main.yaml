@@ -3,33 +3,33 @@
   tags:
     - disk
     - disk.partition
-  import_tasks: partition.yml
+  import_tasks: partition.yaml
   when: disk_partitions | length > 0
 
 - name: "Manage logical volume groups"
   tags:
     - disk
     - disk.vg
-  import_tasks: vg.yml
+  import_tasks: vg.yaml
   when: disk_vgs | length > 0
 
 - name: "Manage logical volumes"
   tags:
     - disk
     - disk.lvol
-  import_tasks: lvol.yml
+  import_tasks: lvol.yaml
   when: disk_lvols | length > 0
 
 - name: "Manage filesystems"
   tags:
     - disk
     - disk.filesystem
-  import_tasks: filesystem.yml
+  import_tasks: filesystem.yaml
   when: disk_filesystems | length > 0
 
 - name: "Manage logical volumes"
   tags:
     - disk
     - disk.mount
-  import_tasks: mount.yml
+  import_tasks: mount.yaml
   when: disk_mounts | length > 0
