@@ -9,6 +9,12 @@
 - name: "Manage logical volume groups"
   tags:
     - disk
+    - disk.mdraid
+  import_tasks: mdraid.yaml
+
+- name: "Manage logical volume groups"
+  tags:
+    - disk
     - disk.vg
   import_tasks: vg.yaml
   when: disk_vgs | length > 0

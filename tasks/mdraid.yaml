@@ -1,0 +1,36 @@
+---
+- name: "Install mdadm software"
+  tags:
+    - disk.mdraid.software
+  ansible.builtin.import_role:
+    name: software
+  vars:
+    software_pkgs:
+      - name: mdadm
+
+- name: "Create mdraid"
+  tags:
+    - disk.mdraid.create
+  ansible.builtin.shell:
+    cmd: >-
+      yes | 
+      mdadm 
+      --create {{ item['device'] }} 
+      --level={{ item['level'] }} 
+      --name={{ item['name'] }} 
+      --raid-devices={{ item['devices'] | length }} 
+      {{ item['options']| default([]) | join(' ') }} 
+      {{ item['devices'] | join(' ') }}
+    creates: "{{ item['device'] }}"
+  loop: "{{ disk_mdraids }}"
+  loop_control:
+    label: "{{ item['device'] }} level={{ item['level'] }} devices={{ item['devices'] | join(',') }}"
+  become: true
+  register: mdraid_create
+
+- name: "Update initramfs"
+  tags:
+    - disk.mdraid.initramfs
+  ansible.builtin.command: dracut -f
+  become: true
+  when: mdadmraid_create['changed']
