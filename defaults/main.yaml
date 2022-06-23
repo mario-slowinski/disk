@@ -15,6 +15,7 @@ disk_partitions:
       - lvm
     state: present
 
+disk_mdraids: []
 
 disk_vgs:
   - vg: export
