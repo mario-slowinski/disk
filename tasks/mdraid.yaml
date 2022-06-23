@@ -13,13 +13,13 @@
     - disk.mdraid.create
   ansible.builtin.shell:
     cmd: >-
-      yes | 
-      mdadm 
-      --create {{ item['device'] }} 
-      --level={{ item['level'] }} 
-      --name={{ item['name'] }} 
-      --raid-devices={{ item['devices'] | length }} 
-      {{ item['options']| default([]) | join(' ') }} 
+      yes |
+      mdadm
+      --create {{ item['device'] }}
+      --level={{ item['level'] }}
+      --name={{ item['name'] }}
+      --raid-devices={{ item['devices'] | length }}
+      {{ item['options']| default([]) | join(' ') }}
       {{ item['devices'] | join(' ') }}
     creates: "{{ item['device'] }}"
   loop: "{{ disk_mdraids }}"
@@ -28,9 +28,27 @@
   become: true
   register: mdraid_create
 
+- name: "Update mdadm.conf"
+  tags:
+    - disk.mdraid.conf
+  block:
+    - name: "Examine md devices"
+      ansible.builtin.command: mdadm --examine --scan
+      become: true
+      register: mdadm_conf
+    - name: "Save md devices in {{ disk_mdraid_conf }}"
+      ansible.builtin.lineinfile:
+        path: "{{ disk_mdraid_conf }}"
+        create: true
+        line: "{{ item }}"
+      loop: "{{ mdadm_conf['stdout_lines'] }}"
+      loop_control:
+        label: "{{ item }}"
+      become: true
+
 - name: "Update initramfs"
   tags:
     - disk.mdraid.initramfs
-  ansible.builtin.command: dracut -f
+  ansible.builtin.command: dracut -f --mdadmconf --add=mdraid --add-drivers="raid1"
   become: true
-  when: mdadmraid_create['changed']
+  when: mdraid_create['changed']
