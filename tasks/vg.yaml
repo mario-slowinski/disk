@@ -7,3 +7,4 @@
   loop: "{{ disk_vgs }}"
   loop_control:
     label: "{{ item['vg'] }} {{ item['state'] | default('present') }}"
+  become: true

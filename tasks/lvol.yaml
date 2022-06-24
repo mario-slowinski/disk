@@ -10,3 +10,4 @@
   loop: "{{ disk_lvols }}"
   loop_control:
     label: "{{ item['lv'] }} {{ item['size'] | default('') }} {{ item['state'] | default('present') }}"
+  become: true
