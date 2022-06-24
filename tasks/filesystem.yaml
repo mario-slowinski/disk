@@ -10,3 +10,4 @@
   loop: "{{ disk_filesystems }}"
   loop_control:
     label: "{{ item['dev'] }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
+  become: true

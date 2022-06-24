@@ -11,6 +11,7 @@
   loop: "{{ disk_mounts }}"
   loop_control:
     label: "{{ item['dev'] }} {{ item['path'] | default('') }} {{ item['state'] }}"
+  become: true
 
 - name: "Set mount permissions"
   tags:
@@ -23,6 +24,7 @@
   loop: "{{ disk_mounts }}"
   loop_control:
     label: "{{ item['path'] }} owner={{ item['owner'] | default('') }} group={{ item['group'] | default('') }} mode={{ item['mode'] | default('') }}"
+  become: true
   when: >-
     item['owner'] is defined
     or item['group'] is defined

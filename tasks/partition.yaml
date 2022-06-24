@@ -14,3 +14,4 @@
   loop: "{{ disk_partitions }}"
   loop_control:
     label: "{{ item['device'] }}{{ item['number'] }} {{ item['state'] | default('info') }}"
+  become: true
