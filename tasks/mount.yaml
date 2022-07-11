@@ -4,7 +4,7 @@
     src: "{{ item['dev'] | default(omit) }}"
     path: "{{ item['path'] | mandatory }}"
     fstype: "{{ item['fstype'] | mandatory }}"
-    opts: "{{ item['opts'] | default([]) | join(' ') | default('defatults',true) }}"
+    opts: "{{ item['opts'] | default([]) | join(',') | default('defatults',true) }}"
     passno: "{{ item['passno'] | default(omit) }}"
     dump: "{{ item['dump'] | default(omit) }}"
     state: "{{ item['state'] | mandatory }}"
