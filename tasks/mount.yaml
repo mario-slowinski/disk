@@ -1,7 +1,7 @@
 ---
 - name: "Manage filesystem mount"
   ansible.posix.mount:
-    src: "{{ item['dev'] | default(omit) }}"
+    src: "{{ item['src'] | default(omit) }}"
     path: "{{ item['path'] | mandatory }}"
     fstype: "{{ item['fstype'] | mandatory }}"
     opts: "{{ item['opts'] | default([]) | join(',') | default('defatults',true) }}"
@@ -10,7 +10,7 @@
     state: "{{ item['state'] | mandatory }}"
   loop: "{{ disk_mounts }}"
   loop_control:
-    label: "{{ item['dev'] }} {{ item['path'] | default('') }} {{ item['state'] }}"
+    label: "{{ item['src'] }} {{ item['path'] | default('') }} {{ item['state'] }}"
   become: true
 
 - name: "Set mount permissions"
