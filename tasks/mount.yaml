@@ -12,17 +12,17 @@
       {%- if item['UUID'] is defined -%}
         {{- "" }}UUID={{ disk_filesystem_UUID['results'] | selectattr('item.src','eq',item['src']) | map(attribute='stdout') | first }}
       {%- else -%}
-        {{- item['src'] }}
+        {{- item['src'] | default(omit,true) }}
       {%- endif -%}
     path: "{{ item['path'] | mandatory }}"
-    fstype: "{{ item['fstype'] | mandatory }}"
+    fstype: "{{ item['fstype'] | default(omit) }}"
     opts: "{{ item['opts'] | default([]) | join(',') | default(omit,true) }}"
     passno: "{{ item['passno'] | default(omit) }}"
     dump: "{{ item['dump'] | default(omit) }}"
     state: "{{ item['state'] | mandatory }}"
   loop: "{{ disk_mounts }}"
   loop_control:
-    label: "{{ item['src'] }} {{ item['path'] | default('') }} {{ item['state'] }}"
+    label: "{{ item['src'] | default('') }} {{ item['state'] }} on {{ item['path'] }}"
   become: true
 
 - name: "Set mount permissions"
