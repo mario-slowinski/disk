@@ -2,7 +2,7 @@
 - name: "Install mdadm software"
   tags:
     - disk.mdraid.software
-  ansible.builtin.import_role:
+  ansible.builtin.include_role:
     name: software
   vars:
     software_pkgs:
