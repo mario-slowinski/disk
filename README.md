@@ -38,6 +38,7 @@ Role Variables
     group:              # moutpoint path group
     mode:               # moutpoint path mode, 
                         # use 0o755 or '0755' notation
+    UUID: bool		# use UUID instead of /dev for mounting
   ```
 
 Dependencies

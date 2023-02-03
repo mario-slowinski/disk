@@ -1,7 +1,19 @@
 ---
+- name: "Get filesystem UUID"
+  ansible.builtin.command: "lsblk {{ item['src'] }} -no UUID"
+  loop: "{{ disk_mounts | selectattr('UUID','defined') }}"
+  loop_control:
+    label: "{{ item['src'] }}"
+  register: disk_filesystem_UUID
+
 - name: "Manage filesystem mount"
   ansible.posix.mount:
-    src: "{{ item['src'] | default(omit) }}"
+    src: >-
+      {%- if item['UUID'] is defined -%}
+        {{- "" }}UUID={{ disk_filesystem_UUID['results'] | selectattr('item.src','eq',item['src']) | map(attribute='stdout') | first }}
+      {%- else -%}
+        {{- item['src'] }}
+      {%- endif -%}
     path: "{{ item['path'] | mandatory }}"
     fstype: "{{ item['fstype'] | mandatory }}"
     opts: "{{ item['opts'] | default([]) | join(',') | default(omit,true) }}"
