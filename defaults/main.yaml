@@ -2,52 +2,52 @@
 disk_unit: "GB"
 
 
-disk_partitions:
-  - device: /dev/sdb
-    label: gpt
-    type: primary
-    number: 1
-    name: lvm
-    start: "0%"
-    end: "100%"
-    resize: false
-    flags:
-      - lvm
-    state: present
+disk_partitions: []
+#  - device: /dev/sdb
+#    label: gpt
+#    type: primary
+#    number: 1
+#    name: lvm
+#    start: "0%"
+#    end: "100%"
+#    resize: false
+#    flags:
+#      - lvm
+#    state: present
 
 disk_mdraids: []
 
-disk_vgs:
-  - vg: export
-    pvs:
-      - /dev/sdb1
-    state: present
+disk_vgs: []
+#  - vg: export
+#    pvs:
+#      - /dev/sdb1
+#    state: present
 
 
-disk_lvols:
-  - vg: export
-    lv: fs
-    state: present
+disk_lvols: []
+#  - vg: export
+#    lv: fs
+#    state: present
 
 
-disk_filesystems:
-  - dev: /dev/export/fs
-    fstype: xfs
-    opts:
-      - "-L export-fs"
-    force: false
-    resize: false
-    state: present
+disk_filesystems: []
+#  - dev: /dev/export/fs
+#    fstype: xfs
+#    opts:
+#      - "-L export-fs"
+#    force: false
+#    resize: false
+#    state: present
 
-disk_mounts:
-  - dev: /dev/export/fs
-    path: /export/fs
-    fstype: xfs
-    opts:
-      - defaults
-    passno: 0
-    dump: 0
-    state: mounted
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
-    mode: 0o755
+disk_mounts: []
+#  - dev: /dev/export/fs
+#    path: /export/fs
+#    fstype: xfs
+#    opts:
+#      - defaults
+#    passno: 0
+#    dump: 0
+#    state: mounted
+#    owner: "{{ ansible_user_uid }}"
+#    group: "{{ ansible_user_gid }}"
+#    mode: 0o755
