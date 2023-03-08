@@ -13,5 +13,43 @@
     state: "{{ item['state'] | default('info') }}"
   loop: "{{ disk_partitions }}"
   loop_control:
-    label: "{{ item['device'] }}{{ item['number'] }} {{ item['state'] | default('info') }}"
+    label: "{{ item['device'] }} state={{ item['state'] | default('info') }}"
+  when: |-
+    ansible_os_family == 'RedHat' or
+    ansible_os_family == 'Debian'
+  become: true
+
+- name: "Initialize disk with win_initialize_disk"
+  community.windows.win_initialize_disk:
+    disk_number: "{{ item['device'] | default(omit) }}"
+    force: "{{ item['force'] | default(omit) }}"
+    online: "{{ item['online'] | default(omit) }}"
+    path: "{{ item['path'] | default(omit) }}"
+    style: "{{ item['style'] | default(omit) }}"
+    uniqueid: "{{ item['uniqueid'] | default(omit) }}"
+  loop: "{{ disk_partitions }}"
+  loop_control:
+    label: "{{ item['device'] | default(item['drive_letter']) }} state={{ item['state'] | default('present') }}"
+  when:
+    - ansible_os_family == 'Windows'
+    - (item['state'] is not defined or item['state'] == 'present')
+  become: true
+
+- name: "Manage disk partitions with win_partition"
+  community.windows.win_partition:
+    active: "{{ item['active'] | default(omit) }}"
+    disk_number: "{{ item['device'] | default(omit) }}"
+    drive_letter: "{{ item['drive_letter'] | default(omit) }}"
+    gpt_type: "{{ item['gpt_type'] | default(omit) }}"
+    hidden: "{{ item['hidden'] | default(omit) }}"
+    partition_size: "{{ item['end'] | default(omit) }}"
+    mbr_type: "{{ item['mbr_type'] | default(omit) }}"
+    offline: "{{ item['offline'] | default(omit) }}"
+    partition_number: "{{ item['number'] | default(omit) }}"
+    read_only: "{{ item['read_only'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+  loop: "{{ disk_partitions }}"
+  loop_control:
+    label: "{{ item['device'] | default(item['drive_letter']) }} state={{ item['state'] | default('present') }}"
+  when: ansible_os_family == 'Windows'
   become: true
