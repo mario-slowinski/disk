@@ -1,0 +1,30 @@
+---
+- name: "Manage Windows credential"
+  community.windows.win_credential:
+    alias: "{{ item['alias'] | default(omit) }}"
+    attributes: "{{ item['attributes'] | default(omit) }}"
+    comment: "{{ item['comment'] | default(omit) }}"
+    name: "{{ item['name'] | mandatory }}"
+    persistence: "{{ item['persistence'] | default(omit) }}"
+    secret: "{{ item['secret'] | default(omit) }}"
+    secret_format: "{{ item['secret_format'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+    type: "{{ item['type'] | mandatory }}"
+    update_secret: "{{ item['update_secret'] | default(omit) }}"
+    username: "{{ item['username'] | default(omit) }}"
+  loop: "{{ disk_mounts | selectattr('persistent', 'defined') }}"
+  loop_control:
+    label: "{{ item['name'] }} type {{ item['type'] }} {{ item['state'] | default('present') }}"
+  become: true
+
+- name: "Manage Windows mapped drive"
+  community.windows.win_mapped_drive:
+    letter: "{{ item['letter'] | mandatory }}"
+    password: "{{ item['password'] | default(omit) }}"
+    path: "{{ item['letter'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+    username: "{{ item['username'] | default(omit) }}"
+  loop: "{{ disk_mounts }}"
+  loop_control:
+    label: "{{ item['letter'] }} {{ item['state'] | default('present') }}"
+  become: true

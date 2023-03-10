@@ -34,9 +34,18 @@
   import_tasks: filesystem.yaml
   when: disk_filesystems | length > 0
 
-- name: "Manage logical volumes"
+- name: "Manage filesystem mounts"
   tags:
     - disk
     - disk.mount
   import_tasks: mount.yaml
-  when: disk_mounts | length > 0
+  when: |-
+    ansible_os_family == 'RedHat' or
+    ansible_os_family == 'Debian'
+
+- name: "Manage drive mounts"
+  tags:
+    - disk
+    - disk.drive
+  import_tasks: drive.yaml
+  when: ansible_os_family == 'Windows'
