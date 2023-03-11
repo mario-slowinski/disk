@@ -12,7 +12,7 @@
     type: "{{ item['type'] | mandatory }}"
     update_secret: "{{ item['update_secret'] | default(omit) }}"
     username: "{{ item['username'] | default(omit) }}"
-  loop: "{{ disk_mounts | selectattr('persistent', 'defined') }}"
+  loop: "{{ disk_drives | selectattr('persistent', 'defined') }}"
   loop_control:
     label: "{{ item['name'] }} type {{ item['type'] }} {{ item['state'] | default('present') }}"
   become: true
@@ -24,7 +24,7 @@
     path: "{{ item['letter'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
     username: "{{ item['username'] | default(omit) }}"
-  loop: "{{ disk_mounts }}"
+  loop: "{{ disk_drives }}"
   loop_control:
     label: "{{ item['letter'] }} {{ item['state'] | default('present') }}"
   become: true
