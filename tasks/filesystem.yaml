@@ -1,5 +1,6 @@
 ---
-- name: "Manage filesystem"
+- name: "Manage Linux filesystem"
+  tags: disk.filesystem.linux
   community.general.filesystem:
     dev: "{{ item['dev'] | mandatory }}"
     fstype: "{{ item['fstype'] | default(omit) }}"
@@ -9,5 +10,29 @@
     state: "{{ item['state'] | default(omit) }}"
   loop: "{{ disk_filesystems }}"
   loop_control:
-    label: "{{ item['dev'] }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
+    label: "{{ item['dev'] | default('') }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
+  when: |-
+    ansible_os_family == 'RedHat' or
+    ansible_os_family == 'Debian'
+  become: true
+
+- name: "Manage Windows filesystem"
+  tags: disk.filesystem.windows
+  community.windows.win_format:
+    allocation_unit_size: "{{ item['allocation_unit_size'] | default(omit) }}"
+    compress: "{{ item['compress'] | default(omit) }}"
+    drive_letter: "{{ item['drive_letter'] | mandatory }}"
+    file_system: "{{ item['file_system'] | default(omit) }}"
+    force: "{{ item['force'] | default(omit) }}"
+    full: "{{ item['full'] | default(omit) }}"
+    integrity_streams: "{{ item['integrity_streams'] | default(omit) }}"
+    label: "{{ item['label'] | default(omit) }}"
+    large_frs: "{{ item['large_frs'] | default(omit) }}"
+    new_label: "{{ item['new_label'] | default(omit) }}"
+    path: "{{ item['path'] | default(omit) }}"
+  loop: "{{ disk_filesystems }}"
+  loop_control:
+    label: "{{ item['drive_letter'] | default('') }} {{ item['label'] | default('') }}"
+  when: |-
+    ansible_os_family == 'Windows'
   become: true
