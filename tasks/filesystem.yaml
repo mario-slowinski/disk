@@ -3,11 +3,12 @@
   tags: disk.filesystem.linux
   community.general.filesystem:
     dev: "{{ item['dev'] | mandatory }}"
+    force: "{{ item['force'] | default(omit) }}"
     fstype: "{{ item['fstype'] | default(omit) }}"
     opts: "{{ item['opts'] | join(' ') if item['opts'] | length > 0 or omit }}"
-    force: "{{ item['force'] | default(omit) }}"
     resizefs: "{{ item['resize'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
+    uuid: "{{ item['uuid'] | default(omit) }}"
   loop: "{{ disk_filesystems }}"
   loop_control:
     label: "{{ item['dev'] | default('') }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
