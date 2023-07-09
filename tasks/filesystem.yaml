@@ -6,7 +6,7 @@
     force: "{{ item['force'] | default(omit) }}"
     fstype: "{{ item['fstype'] | default(omit) }}"
     opts: "{{ item['opts'] | join(' ') if item['opts'] | length > 0 or omit }}"
-    resizefs: "{{ item['resize'] | default(omit) }}"
+    resizefs: "{{ item['resizefs'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
     uuid: "{{ item['uuid'] | default(omit) }}"
   loop: "{{ disk_filesystems }}"
