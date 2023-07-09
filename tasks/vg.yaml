@@ -1,9 +1,16 @@
 ---
 - name: "Manage LVM volume groups"
   community.general.lvg:
-    vg: "{{ item['vg'] | mandatory }}"
+    force: "{{ item['force'] | default(omit) }}"
+    pesize: "{{ item['pesize'] | default(omit) }}"
+    pv_options: "{{ item['pv_options'] | default(omit) }}"
+    pvresize: "{{ item['pvresize'] | default(omit) }}"
     pvs: "{{ item['pvs'] | default([]) | join(',') | default(omit,true) }}"
+    reset_pv_uuid: "{{ item['reset_pv_uuid'] | default(omit) }}"
+    reset_vg_uuid: "{{ item['reset_vg_uuid'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
+    vg: "{{ item['vg'] | mandatory }}"
+    vg_options: "{{ item['vg_options'] | default(omit) }}"
   loop: "{{ disk_vgs }}"
   loop_control:
     label: "{{ item['vg'] }} {{ item['state'] | default('present') }}"
