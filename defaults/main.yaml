@@ -17,6 +17,8 @@ disk_partitions: []
 
 disk_mdraids: []
 
+disk_drives: []
+
 disk_vgs: []
 #  - vg: export
 #    pvs:
