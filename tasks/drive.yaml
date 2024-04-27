@@ -21,7 +21,7 @@
   community.windows.win_mapped_drive:
     letter: "{{ item['letter'] | mandatory }}"
     password: "{{ item['password'] | default(omit) }}"
-    path: "{{ item['letter'] | default(omit) }}"
+    path: "{{ item['path'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
     username: "{{ item['username'] | default(omit) }}"
   loop: "{{ disk_drives }}"
