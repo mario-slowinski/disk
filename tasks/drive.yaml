@@ -1,5 +1,6 @@
 ---
 - name: "Manage Windows credential"
+  tags: disk.credential
   community.windows.win_credential:
     alias: "{{ item['alias'] | default(omit) }}"
     attributes: "{{ item['attributes'] | default(omit) }}"
@@ -18,6 +19,7 @@
   become: true
 
 - name: "Manage Windows mapped drive"
+  tags: disk.drive
   community.windows.win_mapped_drive:
     letter: "{{ item['letter'] | mandatory }}"
     password: "{{ item['password'] | default(omit) }}"
@@ -27,4 +29,14 @@
   loop: "{{ disk_drives }}"
   loop_control:
     label: "{{ item['letter'] }} {{ item['state'] | default('present') }}"
+  become: true
+
+- name: "Manage Windows disk images"
+  tags: disk.image
+  community.windows.win_disk_image:
+    image_path: "{{ item['image_path'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+  loop: "{{ disk_images }}"
+  loop_control:
+    label: "{{ item['image_path'] }} {{ item['state'] | default('present') }}"
   become: true

@@ -46,6 +46,8 @@
 - name: "Manage drive mounts"
   tags:
     - disk
+    - disk.credential
     - disk.drive
+    - disk.image
   import_tasks: drive.yaml
   when: ansible_os_family == 'Windows'

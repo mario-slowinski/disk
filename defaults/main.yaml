@@ -53,3 +53,5 @@ disk_mounts: []
 #    owner: "{{ ansible_user_uid }}"
 #    group: "{{ ansible_user_gid }}"
 #    mode: 0o755
+
+disk_images: []
