@@ -24,7 +24,10 @@
     creates: "{{ item['device'] }}"
   loop: "{{ disk_mdraids }}"
   loop_control:
-    label: "{{ item['device'] }} level={{ item['level'] }} devices={{ item['devices'] | join(',') }}"
+    label: >
+      {{ item['device'] }}
+      level={{ item['level'] }}
+      devices={{ item['devices'] | join(',') }}
   become: true
   register: mdraid_create
 

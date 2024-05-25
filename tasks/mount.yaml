@@ -1,7 +1,7 @@
 ---
 - name: "Get filesystem UUID"
   ansible.builtin.command: "lsblk {{ item['src'] }} -no UUID"
-  loop: "{{ disk_mounts | selectattr('UUID','defined') }}"
+  loop: "{{ disk_mounts | selectattr('UUID', 'defined') }}"
   loop_control:
     label: "{{ item['src'] }}"
   register: disk_filesystem_UUID
@@ -11,19 +11,21 @@
   ansible.posix.mount:
     src: >-
       {%- if item['UUID'] is defined -%}
-        {{- "" }}UUID={{ disk_filesystem_UUID['results'] | selectattr('item.src','eq',item['src']) | map(attribute='stdout') | first }}
+        {{- "" }}UUID={{ disk_filesystem_UUID['results'] | selectattr('item.src', 'eq', item['src']) | map(attribute='stdout') | first }}
       {%- else -%}
-        {{- item['src'] | default(omit,true) }}
+        {{- item['src'] | default(omit, true) }}
       {%- endif -%}
     path: "{{ item['path'] | mandatory }}"
     fstype: "{{ item['fstype'] | default(omit) }}"
-    opts: "{{ item['opts'] | default([]) | join(',') | default(omit,true) }}"
+    opts: "{{ item['opts'] | default([]) | join(',') | default(omit, true) }}"
     passno: "{{ item['passno'] | default(omit) }}"
     dump: "{{ item['dump'] | default(omit) }}"
     state: "{{ item['state'] | mandatory }}"
   loop: "{{ disk_mounts }}"
   loop_control:
-    label: "{{ item['src'] | default('') }} {{ item['state'] }} on {{ item['path'] }}"
+    label: >-
+      {{ item['src'] | default('') }}
+      state={{ item['state'] }} on {{ item['path'] }}
   become: true
 
 - name: "Set mount permissions"
@@ -36,7 +38,11 @@
     mode: "{{ item['mode'] | default(omit) }}"
   loop: "{{ disk_mounts }}"
   loop_control:
-    label: "{{ item['path'] }} owner={{ item['owner'] | default('') }} group={{ item['group'] | default('') }} mode={{ item['mode'] | default('') }}"
+    label: >-
+      {{ item['path'] }}
+      owner={{ item['owner'] | default('') }}
+      group={{ item['group'] | default('') }}
+      mode={{ item['mode'] | default('') }}
   become: true
   when: >-
     item['owner'] is defined

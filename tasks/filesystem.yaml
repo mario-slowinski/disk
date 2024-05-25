@@ -11,7 +11,10 @@
     uuid: "{{ item['uuid'] | default(omit) }}"
   loop: "{{ disk_filesystems }}"
   loop_control:
-    label: "{{ item['dev'] | default('') }} {{ item['fstype'] | default('') }} {{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['dev'] | default('') }}
+      fstype={{ item['fstype'] | default('') }}
+      state={{ item['state'] | default('present') }}
   when: |-
     ansible_os_family == 'RedHat' or
     ansible_os_family == 'Debian'
@@ -33,7 +36,9 @@
     path: "{{ item['path'] | default(omit) }}"
   loop: "{{ disk_filesystems }}"
   loop_control:
-    label: "{{ item['drive_letter'] | default('') }} {{ item['label'] | default('') }}"
+    label: >-
+      {{ item['drive_letter'] | default('') }}
+      {{ item['label'] | default('') }}
   when: |-
     ansible_os_family == 'Windows'
   become: true

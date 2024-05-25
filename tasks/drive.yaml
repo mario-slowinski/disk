@@ -15,7 +15,10 @@
     username: "{{ item['username'] | default(omit) }}"
   loop: "{{ disk_drives | selectattr('persistent', 'defined') }}"
   loop_control:
-    label: "{{ item['name'] }} type {{ item['type'] }} {{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['name'] }}
+      type={{ item['type'] }}
+      state={{ item['state'] | default('present') }}
   become: true
 
 - name: "Manage Windows mapped drive"
@@ -28,7 +31,9 @@
     username: "{{ item['username'] | default(omit) }}"
   loop: "{{ disk_drives }}"
   loop_control:
-    label: "{{ item['letter'] }} {{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['letter'] }}
+      state={{ item['state'] | default('present') }}
   become: true
 
 - name: "Manage Windows disk images"
@@ -38,5 +43,7 @@
     state: "{{ item['state'] | default(omit) }}"
   loop: "{{ disk_images }}"
   loop_control:
-    label: "{{ item['image_path'] }} {{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['image_path'] }}
+      state={{ item['state'] | default('present') }}
   become: true

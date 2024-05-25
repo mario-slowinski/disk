@@ -13,7 +13,9 @@
     state: "{{ item['state'] | default('info') }}"
   loop: "{{ disk_partitions }}"
   loop_control:
-    label: "{{ item['device'] }} state={{ item['state'] | default('info') }}"
+    label: >-
+      {{ item['device'] }}
+      state={{ item['state'] | default('info') }}
   when: |-
     ansible_os_family == 'RedHat' or
     ansible_os_family == 'Debian'
@@ -29,7 +31,9 @@
     uniqueid: "{{ item['uniqueid'] | default(omit) }}"
   loop: "{{ disk_partitions }}"
   loop_control:
-    label: "{{ item['device'] | default(item['drive_letter']) }} state={{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['device'] | default(item['drive_letter']) }}
+      state={{ item['state'] | default('present') }}
   when:
     - ansible_os_family == 'Windows'
     - (item['state'] is not defined or item['state'] == 'present')
@@ -50,6 +54,8 @@
     state: "{{ item['state'] | default(omit) }}"
   loop: "{{ disk_partitions }}"
   loop_control:
-    label: "{{ item['device'] | default(item['drive_letter']) }} state={{ item['state'] | default('present') }}"
+    label: >-
+      {{ item['device'] | default(item['drive_letter']) }}
+      state={{ item['state'] | default('present') }}
   when: ansible_os_family == 'Windows'
   become: true
