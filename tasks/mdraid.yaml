@@ -13,13 +13,14 @@
     - disk.mdraid.create
   ansible.builtin.shell:
     cmd: >-
+      set -o pipefail &&
       yes |
       mdadm
       --create {{ item['device'] }}
       --level={{ item['level'] }}
       --name={{ item['name'] }}
       --raid-devices={{ item['devices'] | length }}
-      {{ item['options']| default([]) | join(' ') }}
+      {{ item['options'] | default([]) | join(' ') }}
       {{ item['devices'] | join(' ') }}
     creates: "{{ item['device'] }}"
   loop: "{{ disk_mdraids }}"
@@ -38,6 +39,7 @@
     - name: "Examine md devices"
       ansible.builtin.command: mdadm --examine --scan
       become: true
+      changed_when: false
       register: mdadm_conf
     - name: "Save md devices in {{ disk_mdraid_conf['path'] }}"
       ansible.builtin.lineinfile:
