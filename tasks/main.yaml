@@ -3,42 +3,42 @@
   tags:
     - disk
     - disk.partition
-  import_tasks: partition.yaml
+  ansible.builtin.import_tasks: partition.yaml
   when: disk_partitions | length > 0
 
 - name: "Manage logical volume groups"
   tags:
     - disk
     - disk.mdraid
-  import_tasks: mdraid.yaml
+  ansible.builtin.import_tasks: mdraid.yaml
   when: disk_mdraids | length > 0
 
 - name: "Manage logical volume groups"
   tags:
     - disk
     - disk.vg
-  import_tasks: vg.yaml
+  ansible.builtin.import_tasks: vg.yaml
   when: disk_vgs | length > 0
 
 - name: "Manage logical volumes"
   tags:
     - disk
     - disk.lvol
-  import_tasks: lvol.yaml
+  ansible.builtin.import_tasks: lvol.yaml
   when: disk_lvols | length > 0
 
 - name: "Manage filesystems"
   tags:
     - disk
     - disk.filesystem
-  import_tasks: filesystem.yaml
+  ansible.builtin.import_tasks: filesystem.yaml
   when: disk_filesystems | length > 0
 
 - name: "Manage filesystem mounts"
   tags:
     - disk
     - disk.mount
-  import_tasks: mount.yaml
+  ansible.builtin.import_tasks: mount.yaml
   when: |-
     ansible_os_family == 'RedHat' or
     ansible_os_family == 'Debian'
@@ -49,5 +49,7 @@
     - disk.credential
     - disk.drive
     - disk.image
-  import_tasks: drive.yaml
-  when: ansible_os_family == 'Windows'
+  ansible.builtin.import_tasks: drive.yaml
+  when:
+    - ansible_os_family == 'Windows'
+    - (disk_drives | length + disk_images | length) > 0
