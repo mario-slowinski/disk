@@ -36,11 +36,15 @@
       ansible.builtin.command: mdadm --examine --scan
       become: true
       register: mdadm_conf
-    - name: "Save md devices in {{ disk_mdraid_conf }}"
+    - name: "Save md devices in {{ disk_mdraid_conf['path'] }}"
       ansible.builtin.lineinfile:
-        path: "{{ disk_mdraid_conf }}"
+        path: "{{ disk_mdraid_conf['path'] }}"
         create: true
         line: "{{ item }}"
+        owner: "{{ disk_mdraid_conf['owner'] }}"
+        group: "{{ disk_mdraid_conf['group'] }}"
+        mode: "{{ disk_mdraid_conf['mode'] }}"
+        setype: "{{ disk_mdraid_conf['setype'] }}"
       loop: "{{ mdadm_conf['stdout_lines'] }}"
       loop_control:
         label: "{{ item }}"

@@ -1,2 +1,7 @@
 ---
-disk_mdraid_conf: /etc/mdadm.conf
+disk_mdraid_conf:
+  path: /etc/mdadm.conf
+  owner: root
+  group: root
+  mode: "0o644"
+  setype: etc_t
