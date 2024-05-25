@@ -30,7 +30,7 @@
       level={{ item['level'] }}
       devices={{ item['devices'] | join(',') }}
   become: true
-  register: mdraid_create
+  notify: "Update initramfs"
 
 - name: "Update mdadm.conf"
   tags:
@@ -54,10 +54,3 @@
       loop_control:
         label: "{{ item }}"
       become: true
-
-- name: "Update initramfs"
-  tags:
-    - disk.mdraid.initramfs
-  ansible.builtin.command: dracut -f --mdadmconf --add=mdraid --add-drivers="raid1"
-  become: true
-  when: mdraid_create['changed']

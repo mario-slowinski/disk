@@ -1,0 +1,8 @@
+---
+- name: "Update initramfs"
+  tags:
+    - disk.mdraid.initramfs
+  ansible.builtin.command:
+    cmd: dracut -f --mdadmconf --add=mdraid --add-drivers="raid1"
+  changed_when: true
+  become: true
