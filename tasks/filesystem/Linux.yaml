@@ -1,0 +1,17 @@
+---
+- name: "Manage Linux filesystem"
+  community.general.filesystem:
+    dev: "{{ item['dev'] | mandatory }}"
+    force: "{{ item['force'] | default(omit) }}"
+    fstype: "{{ item['fstype'] | default(omit) }}"
+    opts: "{{ item['opts'] | join(' ') if item['opts'] | length > 0 or omit }}"
+    resizefs: "{{ item['resizefs'] | default(omit) }}"
+    state: "{{ item['state'] | default(omit) }}"
+    uuid: "{{ item['uuid'] | default(omit) }}"
+  loop: "{{ disk_filesystems }}"
+  loop_control:
+    label: >-
+      {{ item['dev'] | default('') }}
+      fstype={{ item['fstype'] | default('') }}
+      state={{ item['state'] | default('present') }}
+  become: true

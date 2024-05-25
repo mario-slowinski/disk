@@ -3,7 +3,7 @@
   tags:
     - disk
     - disk.partition
-  ansible.builtin.import_tasks: partition.yaml
+  ansible.builtin.import_tasks: "partition/{{ ansible_system }}.yaml"
   when: disk_partitions | length > 0
 
 - name: "Manage logical volume groups"
@@ -31,7 +31,7 @@
   tags:
     - disk
     - disk.filesystem
-  ansible.builtin.import_tasks: filesystem.yaml
+  ansible.builtin.import_tasks: "filesystem/{{ ansible_system }}.yaml"
   when: disk_filesystems | length > 0
 
 - name: "Manage filesystem mounts"

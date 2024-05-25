@@ -1,27 +1,5 @@
 ---
-- name: "Manage Linux filesystem"
-  tags: disk.filesystem.linux
-  community.general.filesystem:
-    dev: "{{ item['dev'] | mandatory }}"
-    force: "{{ item['force'] | default(omit) }}"
-    fstype: "{{ item['fstype'] | default(omit) }}"
-    opts: "{{ item['opts'] | join(' ') if item['opts'] | length > 0 or omit }}"
-    resizefs: "{{ item['resizefs'] | default(omit) }}"
-    state: "{{ item['state'] | default(omit) }}"
-    uuid: "{{ item['uuid'] | default(omit) }}"
-  loop: "{{ disk_filesystems }}"
-  loop_control:
-    label: >-
-      {{ item['dev'] | default('') }}
-      fstype={{ item['fstype'] | default('') }}
-      state={{ item['state'] | default('present') }}
-  when: |-
-    ansible_os_family == 'RedHat' or
-    ansible_os_family == 'Debian'
-  become: true
-
 - name: "Manage Windows filesystem"
-  tags: disk.filesystem.windows
   community.windows.win_format:
     allocation_unit_size: "{{ item['allocation_unit_size'] | default(omit) }}"
     compress: "{{ item['compress'] | default(omit) }}"
@@ -39,6 +17,4 @@
     label: >-
       {{ item['drive_letter'] | default('') }}
       {{ item['label'] | default('') }}
-  when: |-
-    ansible_os_family == 'Windows'
   become: true
