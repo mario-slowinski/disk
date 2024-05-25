@@ -5,7 +5,7 @@
     pesize: "{{ item['pesize'] | default(omit) }}"
     pv_options: "{{ item['pv_options'] | default(omit) }}"
     pvresize: "{{ item['pvresize'] | default(omit) }}"
-    pvs: "{{ item['pvs'] | default([]) | join(',') | default(omit,true) }}"
+    pvs: "{{ item['pvs'] | default([]) | join(',') | default(omit, true) }}"
     reset_pv_uuid: "{{ item['reset_pv_uuid'] | default(omit) }}"
     reset_vg_uuid: "{{ item['reset_vg_uuid'] | default(omit) }}"
     state: "{{ item['state'] | default(omit) }}"
